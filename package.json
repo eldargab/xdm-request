@@ -1,0 +1,8 @@
+{
+  "name": "xdm-request",
+  "version": "0.0.0",
+  "description": "Cross domain ajax requests",
+  "dependencies": {
+    "express": "3.0.x"
+  }
+}

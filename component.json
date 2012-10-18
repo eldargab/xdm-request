@@ -1,0 +1,10 @@
+{
+  "name": "xdm-request",
+  "repo": "eldargab/xdm-request",
+  "version": "0.0.0",
+  "dependencies": {
+    "component/emitter": "*"
+  },
+  "scripts": ["index.js", "http.js"],
+  "files": ["frame.js"]
+}
