@@ -44,11 +44,11 @@ function Frame (url) {
 
 inherit(Frame, Emitter)
 
-Frame.prototype.send = function (data, cb) {
+Frame.prototype.send = function (req, cb) {
   var id = 'msg' + uid()
   var msg = {
     id: id,
-    data: data
+    req: req
   }
   this.window(function (w) {
     w.postMessage(msg, '*')
@@ -73,14 +73,15 @@ Frame.prototype.init = function () {
   this._dispatch = bind(this, function (e) {
     if (this.url.indexOf(e.origin) != 0) return // TODO: this is lame
     if (!e.data) return
-    if (e.data == 'ready') {
+    if (e.data == 'xdm-request-ready') {
       this._window = e.source
       this.emit('connect')
       this.off('connect')
       return
     }
+    if (e.data.type != 'xdm-response') return
     var id = e.data.id
-    id && this.emit(id, e.data.data)
+    id && this.emit(id, e.data.res)
   })
   onmessage(this._dispatch)
 }

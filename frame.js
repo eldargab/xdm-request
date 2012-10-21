@@ -2,14 +2,15 @@
 
   onmessage(function (e) {
     var id = e.data.id
-    var req = e.data.data
+    var req = e.data.req
     var xhr = new XMLHttpRequest
 
     xhr.onreadystatechange = function () {
       if (xhr.readyState != 4) return
       e.source.postMessage({
         id: id,
-        data: new Response(xhr)
+        type: 'xdm-response',
+        res: new Response(xhr)
       }, '*')
     }
 
@@ -22,7 +23,7 @@
     xhr.send(req.data)
   })
 
-  window.parent.postMessage('ready', '*')
+  window.parent.postMessage('xdm-request-ready', '*')
 
   function Response (xhr) {
     this.status = xhr.status || 0
