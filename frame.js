@@ -1,6 +1,7 @@
 ;(function () {
 
   onmessage(function (e) {
+    var source = e.source // ie crap, e.source will not be available in closure
     var data = JSON.parse(e.data)
     var id = data.id
     var req = data.req
@@ -8,7 +9,7 @@
 
     xhr.onreadystatechange = function () {
       if (xhr.readyState != 4) return
-      e.source.postMessage(JSON.stringify({
+      source.postMessage(JSON.stringify({
         id: id,
         type: 'xdm-response',
         res: new Response(xhr)
@@ -33,7 +34,8 @@
   }
 
   function onmessage (cb) {
-    var listen = window.addEventListener || window.attachEvent
-    listen.call(window, 'message', cb)
+    window.addEventListener
+      ? window.addEventListener('message', cb)
+      : window.attachEvent('onmessage', cb)
   }
 })()

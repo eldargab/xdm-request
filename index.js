@@ -96,10 +96,13 @@ Frame.prototype.init = function () {
 
 Frame.prototype.destroy = function () {
   this.iframe && document.body.removeChild(this.iframe)
-  this._dispatch && window.removeEventListener('message', this._dispatch)
+  window.removeEventListener
+    ? window.removeEventListener('message', this._dispatch)
+    : window.detachEvent('onmessage', this._dispatch)
 }
 
 function onmessage (cb) {
-  var listen = window.addEventListener || window.attachEvent
-  listen.call(window, 'message', cb)
+  window.addEventListener
+    ? window.addEventListener('message', cb)
+    : window.attachEvent('onmessage', cb)
 }
