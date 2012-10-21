@@ -1,5 +1,5 @@
 describe('Xdm Request', function () {
-  var request, expect = chai.expect
+  var request
 
   before(function () {
     request = require('xdm-request')('http://localhost:3000/test/frame.html')
@@ -7,14 +7,15 @@ describe('Xdm Request', function () {
 
   it('simple GET', function (done) {
     request.get('/echo', function (res) {
-      expect(res.status).to.equal(200)
+      assert(res.status)
       done()
     })
   })
 
   it('GET json', function (done) {
     request.get('/json', function (res) {
-      expect(res.body).to.eql(['foo', 'bar'])
+      assert(res.body[0] == 'foo')
+      assert(res.body[1] == 'bar')
       done()
     })
   })
@@ -25,10 +26,8 @@ describe('Xdm Request', function () {
         .get('/echo?hello=world')
         .query({foo: 'bar'})
         .end(function (res) {
-          expect(res.body).to.have.property('query').deep.equal({
-            hello: 'world',
-            foo: 'bar'
-          })
+          assert(res.body.query.hello == 'world')
+          assert(res.body.query.foo == 'bar')
           done()
         })
     })
@@ -37,9 +36,7 @@ describe('Xdm Request', function () {
         .get('/echo')
         .query({foo: 'bar'})
         .end(function (res) {
-          expect(res.body).to.have.property('query').deep.equal({
-            foo: 'bar'
-          })
+          assert(res.body.query.foo == 'bar')
           done()
         })
     })

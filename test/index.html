@@ -4,9 +4,13 @@
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <link rel="stylesheet" type="text/css" href="mocha/mocha.css">
   <script type="text/javascript" src="mocha/mocha.js"></script>
-  <script type="text/javascript" src="chai.js"></script>
   <script type="text/javascript">
     mocha.setup({ui: 'bdd'})
+  </script>
+  <script type="text/javascript">
+    function assert (obj, msg) {
+      if (!obj) throw new Error(msg || 'Assertion error')
+    }
   </script>
 </head>
 <body>

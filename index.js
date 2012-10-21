@@ -1,4 +1,6 @@
 var Emitter = require('emitter')
+var inherit = require('inherit')
+var bind = require('bind')
 var Request = require('./http')
 
 module.exports = function (url) {
@@ -40,7 +42,7 @@ function Frame (url) {
   this.init()
 }
 
-Frame.prototype = Object.create(Emitter.prototype)
+inherit(Frame, Emitter)
 
 Frame.prototype.send = function (data, cb) {
   var id = 'msg' + uid()
@@ -68,7 +70,7 @@ Frame.prototype.window = function (cb) {
 }
 
 Frame.prototype.init = function () {
-  this._dispatch = function (e) {
+  this._dispatch = bind(this, function (e) {
     if (this.url.indexOf(e.origin) != 0) return // TODO: this is lame
     if (!e.data) return
     if (e.data == 'ready') {
@@ -79,11 +81,16 @@ Frame.prototype.init = function () {
     }
     var id = e.data.id
     id && this.emit(id, e.data.data)
-  }.bind(this)
-  window.addEventListener('message', this._dispatch)
+  })
+  onmessage(this._dispatch)
 }
 
 Frame.prototype.destroy = function () {
   this.iframe && document.body.removeChild(this.iframe)
   this._dispatch && window.removeEventListener('message', this._dispatch)
+}
+
+function onmessage (cb) {
+  var listen = window.addEventListener || window.attachEvent
+  listen.call(window, 'message', cb)
 }

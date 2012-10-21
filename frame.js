@@ -31,6 +31,7 @@
   }
 
   function onmessage (cb) {
-    window.addEventListener('message', cb)
+    var listen = window.addEventListener || window.attachEvent
+    listen.call(window, 'message', cb)
   }
 })()

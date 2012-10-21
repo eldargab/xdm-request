@@ -1,6 +1,8 @@
 // Adapted version of https://github.com/visionmedia/superagent
 
 var Emitter = require('emitter')
+var trim = require('trim')
+var inherit = require('inherit')
 
 module.exports = Request
 
@@ -51,7 +53,7 @@ function parseHeader(str) {
     line = lines[i]
     index = line.indexOf(':')
     field = line.slice(0, index).toLowerCase()
-    val = line.slice(index + 1).trim()
+    val = trim(line.slice(index + 1))
     fields[field] = val
   }
 
@@ -79,7 +81,7 @@ function Request (frame, method, url) {
   Emitter.call(this)
 }
 
-Request.prototype = Object.create(Emitter.prototype)
+inherit(Request, Emitter)
 
 Request.prototype.set = function (field, val) {
   if (isObject(field)) {

@@ -3,7 +3,10 @@
   "repo": "eldargab/xdm-request",
   "version": "0.0.0",
   "dependencies": {
-    "component/emitter": "*"
+    "component/emitter": "*",
+    "component/trim": "*",
+    "component/inherit": "*",
+    "component/bind": "*"
   },
   "scripts": ["index.js", "http.js"],
   "files": ["frame.js"]
