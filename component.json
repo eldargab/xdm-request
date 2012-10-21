@@ -6,7 +6,8 @@
     "component/emitter": "*",
     "component/trim": "*",
     "component/inherit": "*",
-    "component/bind": "*"
+    "component/bind": "*",
+    "component/url": "*"
   },
   "scripts": ["index.js", "http.js"],
   "files": ["frame.js"]

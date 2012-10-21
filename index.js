@@ -1,6 +1,7 @@
 var Emitter = require('emitter')
 var inherit = require('inherit')
 var bind = require('bind')
+var parseUrl = require('url').parse
 var Request = require('./http')
 
 module.exports = function (url) {
@@ -36,9 +37,8 @@ function uid () {
 
 
 function origin (url) {
-  var a = document.createElement('a')
-  a.href = url
-  return a.protocol + '//' + a.host
+  url = parseUrl(url)
+  return url.protocol + '//' + url.host
 }
 
 
