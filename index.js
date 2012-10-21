@@ -58,7 +58,7 @@ Frame.prototype.send = function (req, cb) {
     req: req
   }
   this.window(function (w) {
-    w.postMessage(msg, this.origin)
+    w.postMessage(JSON.stringify(msg), this.origin)
     cb && this.on(id, cb)
   })
   return id
@@ -79,16 +79,17 @@ Frame.prototype.window = function (cb) {
 Frame.prototype.init = function () {
   this._dispatch = bind(this, function (e) {
     if (this.origin != e.origin) return
-    if (!e.data) return
-    if (e.data == 'xdm-request-ready') {
+    var data = e.data
+    if (data == 'xdm-request-ready') {
       this._window = e.source
       this.emit('connect')
       this.off('connect')
       return
     }
-    if (e.data.type != 'xdm-response') return
-    var id = e.data.id
-    id && this.emit(id, e.data.res)
+    if ('string' != typeof data) return
+    if (!~data.indexOf('xdm-response')) return
+    data = JSON.parse(data)
+    this.emit(data.id, data.res)
   })
   onmessage(this._dispatch)
 }

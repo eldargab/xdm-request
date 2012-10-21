@@ -1,17 +1,18 @@
 ;(function () {
 
   onmessage(function (e) {
-    var id = e.data.id
-    var req = e.data.req
+    var data = JSON.parse(e.data)
+    var id = data.id
+    var req = data.req
     var xhr = new XMLHttpRequest
 
     xhr.onreadystatechange = function () {
       if (xhr.readyState != 4) return
-      e.source.postMessage({
+      e.source.postMessage(JSON.stringify({
         id: id,
         type: 'xdm-response',
         res: new Response(xhr)
-      }, '*')
+      }), '*')
     }
 
     xhr.open(req.method, req.url, true)
