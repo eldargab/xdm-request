@@ -3,6 +3,18 @@ var inherit = require('inherit')
 var bind = require('bind')
 var Request = require('./http')
 
+var _uid = 0
+
+function uid () {
+  return ++_uid
+}
+
+function origin (url) {
+  var a = document.createElement('a')
+  a.href = url
+  return a.protocol + '//' + a.host
+}
+
 module.exports = function (url) {
   var frame = request.frame = new Frame(url)
 
@@ -29,15 +41,9 @@ module.exports = function (url) {
 }
 
 
-var _uid = 0
-
-function uid () {
-  return ++_uid
-}
-
-
 function Frame (url) {
   this.url = url
+  this.origin = origin(this.url)
   Emitter.call(this)
   this.init()
 }
@@ -51,7 +57,7 @@ Frame.prototype.send = function (req, cb) {
     req: req
   }
   this.window(function (w) {
-    w.postMessage(msg, '*')
+    w.postMessage(msg, this.origin)
     cb && this.on(id, cb)
   })
   return id
@@ -71,7 +77,7 @@ Frame.prototype.window = function (cb) {
 
 Frame.prototype.init = function () {
   this._dispatch = bind(this, function (e) {
-    if (this.url.indexOf(e.origin) != 0) return // TODO: this is lame
+    if (this.origin != e.origin) return
     if (!e.data) return
     if (e.data == 'xdm-request-ready') {
       this._window = e.source

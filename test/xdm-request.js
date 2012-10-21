@@ -2,7 +2,7 @@ describe('Xdm Request', function () {
   var request
 
   before(function () {
-    request = require('xdm-request')('http://localhost:3000/test/frame.html')
+    request = require('xdm-request')('frame.html')
   })
 
   it('simple GET', function (done) {
