@@ -12,10 +12,18 @@ describe('Xdm Request', function () {
     })
   })
 
+  it('simple POST', function (done) {
+    request.post('/echo', function (res) {
+      assert(res.body.method == 'POST')
+      done()
+    })
+  })
+
   it('GET json', function (done) {
     request.get('/json', function (res) {
       assert(res.body[0] == 'foo')
       assert(res.body[1] == 'bar')
+      assert(res.type == 'application/json')
       done()
     })
   })

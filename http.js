@@ -150,7 +150,7 @@ Request.prototype.end = function (cb) {
 
   // body
   if ('GET' != this.method && 'HEAD' != this.method && 'string' != typeof data) {
-    var serialize = serialize[this.header['content-type']]
+    var serialize = serializers[this.header['content-type']]
     if (serialize) data = serialize(data)
   }
 
