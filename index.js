@@ -3,18 +3,6 @@ var inherit = require('inherit')
 var bind = require('bind')
 var Request = require('./http')
 
-var _uid = 0
-
-function uid () {
-  return ++_uid
-}
-
-function origin (url) {
-  var a = document.createElement('a')
-  a.href = url
-  return a.protocol + '//' + a.host
-}
-
 module.exports = function (url) {
   var frame = request.frame = new Frame(url)
 
@@ -38,6 +26,19 @@ module.exports = function (url) {
   }
 
   return request
+}
+
+
+var _uid = 0
+function uid () {
+  return ++_uid
+}
+
+
+function origin (url) {
+  var a = document.createElement('a')
+  a.href = url
+  return a.protocol + '//' + a.host
 }
 
 
